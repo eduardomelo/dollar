@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta do Dólar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #loading {
+            display: none;
+            font-size: 18px;
+            color: gray;
+        }
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Consulta ao Valor do Dólar</h1>
+    <button id="fetchButton">Consultar</button>
+    <div id="loading">Carregando...</div>
+    <div id="result"></div>
+
+    <script>
+        let button = document.getElementById('fetchButton');
+        let loadingDiv = document.getElementById('loading');
+        let resultDiv = document.getElementById('result');
+
+        button.addEventListener('click', () => {
+            loadingDiv.style.display = 'block';
+            resultDiv.textContent = '';
+
+            // URL atualizada para a API
+            fetch('https://open.er-api.com/v6/latest/USD')
+                .then(response => {
+                    if (response.status != 200) {
+                        throw new Error('Erro na resposta da API');
+                    }
+
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    if (data.result === 'success') {
+                        let rate = data.rates.BRL; // Valor do dólar em relação ao real
+                        resultDiv.textContent = `1 USD = ${rate.toFixed(2)} BRL`;
+                    } else {
+                        throw new Error('Erro ao processar os dados da API');
+                    }
+                })
+                .catch(error => {
+                    resultDiv.textContent = 'Erro ao consultar API!';
+                    console.error(error);
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        //loadingDiv.style.display = 'none';
+                        //loadingDiv.textContent = '';
+                        loadingDiv.style.visibility = 'hidden';
+                    }, 500);
+                });
+        });
+    </script>
+</body>
+</html>
