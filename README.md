@@ -1,4 +1,7 @@
 # dollar
+
+https://eduardomelo.github.io/dollar/
+
 PT-BR
 Já que o google removeu a cotação no Brasil, agora tenho a própria página pra consultar o Dólar diariamente :D
 
